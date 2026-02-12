@@ -1,4 +1,4 @@
-import type { Post, Comment } from "../data/posts";
+import type { Post, Comment } from "../utils/api";
 import CommentForm from "./CommentForm";
 
 type Props = {
