@@ -5,16 +5,8 @@ import Hero from "../components/Hero";
 import PostList from "../components/PostList";
 import PostDetail from "../components/PostDetail";
 import CategoryList from "../components/CategoryList";
-import { Post, mapApiDataToPost } from "../utils/api";
+import { Post, Comment, mapApiDataToPost, fetchCommentsForPost } from "../utils/api";
 
-
-export type Comment = {
-  id: number;
-  postId: number;
-  name: string;
-  content: string;
-  date: string;
-};
 
 export default function Home() {
   // State: from API
@@ -48,15 +40,21 @@ export default function Home() {
     fetchPosts();
   }, []);
 
+  // Fetch comments when a post is selected
+  useEffect(() => {
+    if (selectedPost) {
+      const loadComments = async () => {
+        const fetchedComments = await fetchCommentsForPost(selectedPost.id);
+        setComments(fetchedComments);
+      };
+      loadComments();
+    }
+  }, [selectedPost]);
+
   // add comment
   const handleAddComment = (newComment: Comment) => {
     setComments([...comments, newComment]);
   };
-
-  // filter comment
-  const currentPostComments = comments.filter(
-    (c) => selectedPost && c.postId === selectedPost.id
-  );
 
   return (
     <div className="app-container">
@@ -94,7 +92,7 @@ export default function Home() {
                 <div className="card">
                   <PostDetail
                     post={selectedPost}
-                    comments={currentPostComments}
+                    comments={comments}
                     onAddComment={handleAddComment}
                   />
                 </div>
