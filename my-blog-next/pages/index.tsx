@@ -100,7 +100,7 @@ export default function Home() {
                 </div>
               )}
 
-              <div className="card">
+              <div className="card" style={{ marginTop: "2rem" }}>
                 <h3>Categories</h3>
                 <CategoryList posts={posts} />
               </div>
